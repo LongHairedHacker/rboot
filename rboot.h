@@ -20,7 +20,7 @@ extern "C" {
 
 // uncomment to use only c code
 // if you aren't using gcc you may need to do this
-//#define BOOT_NO_ASM
+#define BOOT_NO_ASM
 
 // uncomment to have a checksum on the boot config
 //#define BOOT_CONFIG_CHKSUM
@@ -54,7 +54,8 @@ extern "C" {
 // uncomment to add a boot delay, allows you time to connect
 // a terminal before rBoot starts to run and output messages
 // value is in microseconds
-//#define BOOT_DELAY_MICROS 2000000
+#define BOOT_DELAY_MICROS 2000000
+#define BOOT_BAUDRATE 115200
 
 // define your own default custom rBoot config, used on
 // first boot and in case of corruption, standard fields

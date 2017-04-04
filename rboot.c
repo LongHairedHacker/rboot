@@ -357,6 +357,7 @@ uint32 NOINLINE find_image(void) {
 		ets_printf("unknown\r\n");
 	}
 
+	
 	// print spi speed
 	ets_printf("Flash Speed:  ");
 	flag = header->flags2 & 0x0f;
@@ -533,6 +534,7 @@ uint32 NOINLINE find_image(void) {
 	// copy the loader to top of iram
 	ets_memcpy((void*)_text_addr, _text_data, _text_len);
 	// return address to load from
+
 	return runAddr;
 
 }
