@@ -26,7 +26,7 @@ extern "C" {
 //#define BOOT_CONFIG_CHKSUM
 
 // uncomment to enable big flash support (>1MB)
-//#define BOOT_BIG_FLASH
+#define BOOT_BIG_FLASH
 
 // uncomment to enable 2 way communication between
 // rBoot and the user app via the esp rtc data area
@@ -54,18 +54,20 @@ extern "C" {
 // uncomment to add a boot delay, allows you time to connect
 // a terminal before rBoot starts to run and output messages
 // value is in microseconds
-//#define BOOT_DELAY_MICROS 2000000
+#define BOOT_DELAY_MICROS 2000000
+
+#define BOOT_BAUDRATE 115200
 
 // define your own default custom rBoot config, used on
 // first boot and in case of corruption, standard fields
 // (magic, version and chksum (if applicable) are included
 // for you automatically), see example at end of this file
 // and customise as required
-//#define BOOT_CUSTOM_DEFAULT_CONFIG
+#define BOOT_CUSTOM_DEFAULT_CONFIG
 
 // max number of roms in the config (defaults to 4), higher
 // values will use more ram at run time
-//#define MAX_ROMS 4
+#define MAX_ROMS 4
 
 
 // you should not need to modify anything below this line,
@@ -146,9 +148,11 @@ typedef struct {
 // or just plain wrong if the device has not been programmed correctly!)
 #ifdef BOOT_CUSTOM_DEFAULT_CONFIG
 static uint8 default_config(rboot_config *romconf, uint32 flashsize) {
-	romconf->count = 2;
-	romconf->roms[0] = SECTOR_SIZE * (BOOT_CONFIG_SECTOR + 1);
-	romconf->roms[1] = (flashsize / 2) + (SECTOR_SIZE * (BOOT_CONFIG_SECTOR + 1));
+	romconf->count = 4;
+	romconf->roms[0] = 0x000000 + 0x2000;
+	romconf->roms[1] = 0x100000 + 0x2000;
+	romconf->roms[2] = 0x200000 + 0x2000;
+	romconf->roms[3] = 0x300000 + 0x2000;
 }
 #endif
 
