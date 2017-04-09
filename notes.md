@@ -33,8 +33,13 @@ Building & Testing
 	esptool.py erase_flash
 	esptool.py write_flash 0x0000 firmware/rboot.bin
 	```
+3. Reflash esp_init_data_default.bin (required by the sdk, read via spi, usually not mapped)
+	```
+	esptool.py write_flash 0x3FC000 ../esp-open-sdk/sdk/bin/esp_init_data_default.bin
+	```
 
-3. Test rboot without any roms.
+
+4. Test rboot without any roms.
  	Use a serial monitor (e.g. screen) and reset the esp.
 	```
 	screen /dev/ttyUSB0 115200
@@ -54,21 +59,22 @@ Building & Testing
 	user code done
 	```
 
-4. Build the testroms
+5. Build the testroms
  	```
 	cd testroms
 	make all
 	```
 
-5. Flash one of the testroms, ideally not 0, since we want to test bgiflash
+6. Flash one of the testroms, ideally not 0, since we want to test bigflash
 	```
 	esptool.py write_flash 0x102000 firmware/rom1.bin
 	```
 
-6. Use a serial monitor to check the result
+7. Use a serial monitor to check the result
 	```
 	screen /dev/ttyUSB0 115200
 	<reset>
+	<some garbage appears>
 	rBoot v1.4.2 - richardaburton@gmail.com
 	Flash Size:   32 Mbit
 	Flash Mode:   QIO
@@ -77,9 +83,18 @@ Building & Testing
 
 	Booting rom 1.
 	Testload 1 user_rf_pre_init
-	rf_cal[0] !=0x05,is 0xFF
-	<lots of repeating garbage>
+	<some garbage>1 user_init
+	mode : softAP(5e:cf:7f:39:c1:dc)
+	add if1
+	dhcp server start:(ip:192.168.4.1,mask:255.255.255.0,gw:192.168.4.1)
+	bcn 100
+	Testload 1 blink
+	Testload 1 blink
+	Testload 1 blink
+	<repeat for ever>
 	```
+8. ...
+9. Profit!
 
 **NOTE:** If you only see garbage it might help to replug the usb cable, the CH340 seems to get confused from time to time.
 Since there are 20s boot delay, replugging the usb and then starting the serial monitor works just fine to capture the output before the garbage.
